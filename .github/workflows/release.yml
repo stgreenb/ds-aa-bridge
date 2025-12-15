@@ -1,0 +1,76 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Get version
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Create zip file
+        run: |
+          zip -r ds-aa-bridge-${{ steps.version.outputs.VERSION }}.zip . \
+            -x ".git/*" ".gitignore" ".github/*"
+
+      - name: Generate manifest
+        run: |
+          cat > manifest.json << EOF
+          {
+            "name": "ds-aa-bridge-${{ steps.version.outputs.VERSION }}.zip",
+            "path": "ds-aa-bridge-${{ steps.version.outputs.VERSION }}.zip",
+            "size": $(stat -c%s ds-aa-bridge-${{ steps.version.outputs.VERSION }}.zip)
+          }
+          EOF
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ steps.version.outputs.VERSION }}
+          body: |
+            ## Draw Steel + Automated Animations Bridge v${{ steps.version.outputs.VERSION }}
+
+            A Foundry VTT module that bridges Draw Steel ability usage to Automated Animations.
+
+            ### Installation
+            1. In Foundry VTT, go to **Add-on Modules** → **Install Module**
+            2. Paste this URL in the **Manifest URL** field:
+            ```
+            https://github.com/stgreenb/ds-aa-bridge/releases/latest/download/module.json
+            ```
+            3. Click **Install** and enable the module in world settings
+
+            ### Dependencies
+            - Automated Animations
+            - Sequencer
+            - Draw Steel System
+            - Draw Steel Quick Strike
+
+            ### Changelog
+            - Initial release with animation fallback system
+            - Support for melee, ranged, and on-token animations
+            - Element-based animation selection
+          files: |
+            ds-aa-bridge-${{ steps.version.outputs.VERSION }}.zip
+            module.json
+            manifest.json
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
