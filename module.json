@@ -2,7 +2,7 @@
   "id": "ds-aa-bridge",
   "title": "Draw Steel + Automated Animations Bridge",
   "description": "Bridge Draw Steel ability uses to Automated Animations via public APIs",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "authors": [
     {
       "name": "Steve Greenberg",
@@ -53,11 +53,11 @@
       }
     ]
   },
-  "url": "https://github.com/steve/ds-aa-bridge",
-  "manifest": "https://github.com/steve/ds-aa-bridge/releases/latest/download/module.json",
-  "download": "https://github.com/steve/ds-aa-bridge/releases/latest/download/ds-aa-bridge.zip",
-  "changelog": "https://github.com/steve/ds-aa-bridge/blob/main/CHANGELOG.md",
-  "bugs": "https://github.com/steve/ds-aa-bridge/issues",
+  "url": "https://github.com/stgreenb/ds-aa-bridge",
+  "manifest": "https://github.com/stgreenb/ds-aa-bridge/releases/latest/download/module.json",
+  "download": "https://github.com/stgreenb/ds-aa-bridge/releases/latest/download/ds-aa-bridge.zip",
+  "changelog": "https://github.com/stgreenb/ds-aa-bridge/blob/main/CHANGELOG.md",
+  "bugs": "https://github.com/stgreenb/ds-aa-bridge/issues",
   "compatibility": {
     "minimum": "11",
     "verified": "13"

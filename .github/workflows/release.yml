@@ -26,18 +26,7 @@ jobs:
 
       - name: Create zip file
         run: |
-          zip -r ds-aa-bridge-${{ steps.version.outputs.VERSION }}.zip . \
-            -x ".git/*" ".gitignore" ".github/*"
-
-      - name: Generate manifest
-        run: |
-          cat > manifest.json << EOF
-          {
-            "name": "ds-aa-bridge-${{ steps.version.outputs.VERSION }}.zip",
-            "path": "ds-aa-bridge-${{ steps.version.outputs.VERSION }}.zip",
-            "size": $(stat -c%s ds-aa-bridge-${{ steps.version.outputs.VERSION }}.zip)
-          }
-          EOF
+          zip -r ds-aa-bridge.zip * -x ".git/*" ".gitignore" ".github/*"
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
@@ -67,9 +56,7 @@ jobs:
             - Support for melee, ranged, and on-token animations
             - Element-based animation selection
           files: |
-            ds-aa-bridge-${{ steps.version.outputs.VERSION }}.zip
-            module.json
-            manifest.json
+            ds-aa-bridge.zip
           draft: false
           prerelease: false
         env:
