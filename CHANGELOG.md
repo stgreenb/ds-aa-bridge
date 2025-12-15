@@ -2,6 +2,12 @@
 
 All notable changes to the Draw Steel + Automated Animations Bridge module will be documented in this file.
 
+## [2.0.2] - 2024-12-15
+
+### Fixed
+- Include module.json in GitHub release assets for Foundry VTT installation
+- Ensure both zip and manifest files are available
+
 ## [2.0.1] - 2024-12-15
 
 ### Fixed

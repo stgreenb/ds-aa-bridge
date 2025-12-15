@@ -57,6 +57,7 @@ jobs:
             - Element-based animation selection
           files: |
             ds-aa-bridge.zip
+            module.json
           draft: false
           prerelease: false
         env:

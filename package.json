@@ -1,6 +1,6 @@
 {
   "name": "ds-aa-bridge",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Draw Steel + Automated Animations Bridge",
   "main": "ds-aa-bridge.bundle.mjs",
   "scripts": {
