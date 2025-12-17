@@ -1,9 +1,9 @@
 /**
- * Draw Steel + Automated Animations Bridge v2.0.0
+ * Draw Steel + Automated Animations Bridge v2.1.0
  * Bridge Draw Steel ability uses to Automated Animations via public APIs
  *
  * BUNDLED FOR REVIEW PURPOSES
- * Generated: 2025-12-15T21:18:30.525Z
+ * Generated: 2025-12-17T19:46:58.662Z
  *
  * Authors: Steve Greenberg
  * Repository: https://github.com/steve/ds-aa-bridge
@@ -879,16 +879,34 @@ function debugLog(message, ...args) {
 // Import from: ../apis/aa-api-bridge.js;
 
 /**
+ * Status animation mapping for Draw Steel conditions
+ * Maps status names to AA database labels
+ */
+const STATUS_ANIMATION_MAP = {
+  "Dazed": "[DS] Dazed",
+  "Slowed": "[DS] Slowed",
+  "Bleeding": "[DS] Bleeding",
+  "Blinded": "[DS] Blinded",
+  "Charmed": "[DS] Charmed",
+  "Frightened": "[DS] Frightened",
+  "Poisoned": "[DS] Poisoned",
+  "Restrained": "[DS] Restrained",
+  "Stunned": "[DS] Stunned"
+};
+
+/**
  * Hook handler for Draw Steel chat messages
  */
 class DrawSteelHook {
   constructor() {
     this.aaBridge = new AAAnimationBridge();
     this.dsHookId = null;
+    this.statusAppliedHookId = null;
+    this.statusUndoneHookId = null;
   }
 
   /**
-   * Register the ds-quick-strike hook
+   * Register the ds-quick-strike and status hooks
    */
   register() {
     if (this.dsHookId) {
@@ -902,18 +920,38 @@ class DrawSteelHook {
       this.handleDsQuickStrikeHook(hookPayload);
     });
 
-    console.log(`[${MODULE_ID}] Registered ds-quick-strike hook`);
+    // Register status hooks
+    this.statusAppliedHookId = Hooks.on('ds-quick-strikeStatusApplied', (payload) => {
+      this.handleStatusApplied(payload);
+    });
+
+    this.statusUndoneHookId = Hooks.on('ds-quick-strikeStatusUndone', (payload) => {
+      this.handleStatusUndone(payload);
+    });
+
+    console.log(`[${MODULE_ID}] Registered ds-quick-strike and status hooks`);
   }
 
   /**
-   * Deregister the ds-quick-strike hook
+   * Deregister all hooks
    */
   deregister() {
     if (this.dsHookId) {
       Hooks.off('ds-quick-strike:damageApplied', this.dsHookId);
       this.dsHookId = null;
-      console.log(`[${MODULE_ID}] Deregistered ds-quick-strike hook`);
     }
+
+    if (this.statusAppliedHookId) {
+      Hooks.off('ds-quick-strikeStatusApplied', this.statusAppliedHookId);
+      this.statusAppliedHookId = null;
+    }
+
+    if (this.statusUndoneHookId) {
+      Hooks.off('ds-quick-strikeStatusUndone', this.statusUndoneHookId);
+      this.statusUndoneHookId = null;
+    }
+
+    console.log(`[${MODULE_ID}] Deregistered all hooks`);
   }
 
   
@@ -1217,6 +1255,126 @@ class DrawSteelHook {
     } catch (error) {
       console.error(`[${MODULE_ID}] DS-HOOK: Error converting hook payload:`, error);
       return null;
+    }
+  }
+
+  /**
+   * Validate status hook payload
+   * @param {Object} payload - The status hook payload
+   * @returns {Object} Validation result with valid flag and errors array
+   */
+  validateStatusPayload(payload) {
+    const errors = [];
+
+    if (!payload.statusName) {
+      errors.push('statusName missing');
+    }
+    if (!payload.tokenId) {
+      errors.push('tokenId missing');
+    }
+    if (typeof payload.statusName !== 'string') {
+      errors.push('statusName must be string');
+    }
+    if (typeof payload.tokenId !== 'string') {
+      errors.push('tokenId must be string');
+    }
+
+    return {
+      valid: errors.length === 0,
+      errors
+    };
+  }
+
+  /**
+   * Handle ds-quick-strikeStatusApplied hook
+   * @param {Object} payload - The status applied hook payload
+   */
+  async handleStatusApplied(payload) {
+    try {
+      // Validate payload
+      const validation = this.validateStatusPayload(payload);
+      if (!validation.valid) {
+        return;
+      }
+
+      // Check if animation exists for this status
+      const animationLabel = STATUS_ANIMATION_MAP[payload.statusName];
+      if (!animationLabel) {
+        return;
+      }
+
+      // Get the target token
+      const token = canvas.tokens.get(payload.tokenId);
+      if (!token) {
+        return;
+      }
+
+      // Play the animation using AA
+      await this.playStatusAnimation(token, animationLabel, payload.statusName);
+
+    } catch (error) {
+      // Animation failed but status still applied
+    }
+  }
+
+  /**
+   * Handle ds-quick-strikeStatusUndone hook
+   * @param {Object} payload - The status undone hook payload
+   */
+  async handleStatusUndone(payload) {
+    try {
+      // No animation played for status removal - silent handling
+    } catch (error) {
+      // Error handling for status removal
+    }
+  }
+
+  /**
+   * Play status animation on target token using AA system
+   * @param {Token} token - The target token
+   * @param {string} animationLabel - The AA database label (e.g., "[DS] Slowed")
+   * @param {string} statusName - The status name for logging
+   */
+  async playStatusAnimation(token, animationLabel, statusName) {
+    try {
+      // Check if AA is available
+      if (!this.aaBridge.aaAvailable) {
+        return;
+      }
+
+      // Create fake item object for AA compatibility
+      const fakeItem = {
+        id: `status-${statusName.toLowerCase()}`,
+        name: animationLabel,
+        type: 'feat',
+        system: {
+          duration: {
+            value: null,
+            unit: null
+          }
+        },
+        flags: {
+          'ds-aa-bridge': {
+            isStatusAnimation: true,
+            statusName: statusName
+          }
+        }
+      };
+
+      // Create animation data for AA
+      const animData = {
+        source: token, // Use the target as both source and target for onToken
+        item: fakeItem,
+        targets: [token],
+        abilityName: animationLabel,
+        hitTargets: [token]
+      };
+
+      // Play animation through AA
+      await this.aaBridge.playAnimation(animData);
+
+    } catch (error) {
+      // Animation failed but status still applied
     }
   }
 }

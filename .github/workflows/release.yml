@@ -33,7 +33,7 @@ jobs:
         with:
           name: Release ${{ steps.version.outputs.VERSION }}
           body: |
-            ## Draw Steel + Automated Animations Bridge v${{ steps.version.outputs.VERSION }}
+            ## Draw Steel + Automated Animations Bridge ${{ steps.version.outputs.VERSION }}
 
             A Foundry VTT module that bridges Draw Steel ability usage to Automated Animations.
 
@@ -50,6 +50,7 @@ jobs:
             - Sequencer
             - Draw Steel System
             - Draw Steel Quick Strike
+            - JB2A
 
             ### Changelog
             - Initial release with animation fallback system
