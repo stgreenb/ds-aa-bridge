@@ -7,7 +7,7 @@ All notable changes to the Draw Steel + Automated Animations Bridge module will 
 ### Added
 - Status condition animations support for Draw Steel Quick Strike
 - Automatic animations when conditions are applied: Dazed, Slowed, Bleeding, Blinded, Charmed, Frightened, Poisoned, Restrained, and Stunned
-- Brief 1.5 second onToken animations when status conditions are applied
+- Brief onToken animations when status conditions are applied (duration configurable in AA)
 - Integration with AA database entries for status animations
 - Hook listeners for `ds-quick-strikeStatusApplied` and `ds-quick-strikeStatusUndone` events
 
