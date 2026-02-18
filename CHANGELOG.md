@@ -2,6 +2,13 @@
 
 All notable changes to the Draw Steel + Automated Animations Bridge module will be documented in this file.
 
+## [2.2.0] - 2025-02-18
+
+### Compatibility
+- Verified compatibility with Draw Steel v0.10.0
+- Tested with new chat message parts system introduced in v0.10.0
+- No code changes required - ds-quick-strike hook integration remains stable
+
 ## [2.1.0] - 2024-12-17
 
 ### Added

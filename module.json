@@ -2,7 +2,7 @@
   "id": "ds-aa-bridge",
   "title": "Draw Steel + Automated Animations Bridge",
   "description": "Bridge Draw Steel ability uses to Automated Animations via public APIs",
-  "version": "2.0.2",
+  "version": "2.2.0",
   "authors": [
     {
       "name": "Steve Greenberg",
@@ -46,9 +46,9 @@
       {
         "id": "draw-steel",
         "type": "system",
-        "compatibility": {
+"compatibility": {
           "minimum": "0.9.1",
-          "verified": "0.9.1"
+          "verified": "0.10.0"
         }
       }
     ]
