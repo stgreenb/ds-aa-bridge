@@ -4,7 +4,7 @@ A Foundry VTT module that bridges Draw Steel ability usage to Automated Animatio
 
 ## Version Information
 
-- **Version**: 2.1.0
+- **Version**: 2.2.0
 - **Author**: stgreenb
 - **Foundry Compatibility**: v13
 - **Dependencies**:
@@ -104,11 +104,10 @@ Enable debug mode in module settings to see:
  - Ranged weapon vs ranged without weapon
  - Build specific animations for some abilties and/or make it easy for the community to submit them.
 
-## Recent Changes (v2.1.0)
- - ✅ **Status Condition Animations**: Added automatic animations for status conditions applied via abilities
- - ✅ **Supported Conditions**: Dazed, Slowed, Bleeding, Blinded, Charmed, Frightened, Poisoned, Restrained, Stunned
- - ✅ **AA Integration**: Uses AA database entries ([DS] Status Name) for consistent animations
- - ✅ **Brief Visual Effects**: OnToken animations trigger when conditions are applied
+## Recent Changes (v2.2.0)
+  - ✅ **Draw Steel 0.10.0 Compatibility**: Verified compatibility with Draw Steel v0.10.0
+  - ✅ **Chat Message Parts**: Tested with new chat message parts system
+  - ✅ **Stable Integration**: ds-quick-strike hook integration remains stable
 
 
 ## License
