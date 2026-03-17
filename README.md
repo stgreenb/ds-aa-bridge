@@ -4,7 +4,7 @@ A Foundry VTT module that bridges Draw Steel ability usage to Automated Animatio
 
 ## Version Information
 
-- **Version**: 2.1.0
+- **Version**: 2.3.0
 - **Author**: stgreenb
 - **Foundry Compatibility**: v13
 - **Dependencies**:
@@ -21,6 +21,18 @@ A Foundry VTT module that bridges Draw Steel ability usage to Automated Animatio
 3. Import the DS animation menu (`ds-aa.json`) for fallbacks via:
    - Automated Animations → Menu Manager → Merge or Overwrite
 4. Enable the module in world settings
+
+## When Animations Play
+
+Animations are triggered automatically when Draw Steel Quick Strike processes ability results. This includes:
+
+- **Damage animations**: When an ability deals damage (via Strike keyword or damage roll)
+- **Status animations**: When status effects are applied (Taunted, Dazed, Bleeding, etc.)
+
+The animations are triggered through Draw Steel's enricher system - you don't need to do anything special. Simply use abilities as normal, and animations will play automatically for:
+- `/damage` enricher calls
+- `/apply` enricher calls  
+- Ability results with damage or status effects
 
 ## Animation Selection Logic
 
@@ -104,8 +116,13 @@ Enable debug mode in module settings to see:
  - Ranged weapon vs ranged without weapon
  - Build specific animations for some abilties and/or make it easy for the community to submit them.
 
+## Recent Changes (v2.3.0)
+  - ✅ **Draw Steel 0.11.x Compatibility**: Verified working with Draw Steel 0.11.1
+  - ✅ **Quick Strike 2.1.9 Compatibility**: Updated hook names to match 2.1.4+ naming convention
+  - ✅ **Fixed Status Animations**: Critical fix for status animations not triggering
+
 ## Recent Changes (v2.1.0)
- - ✅ **Status Condition Animations**: Added automatic animations for status conditions applied via abilities
+  - ✅ **Status Condition Animations**: Added automatic animations for status conditions applied via abilities
  - ✅ **Supported Conditions**: Dazed, Slowed, Bleeding, Blinded, Charmed, Frightened, Poisoned, Restrained, Stunned
  - ✅ **AA Integration**: Uses AA database entries ([DS] Status Name) for consistent animations
  - ✅ **Brief Visual Effects**: OnToken animations trigger when conditions are applied

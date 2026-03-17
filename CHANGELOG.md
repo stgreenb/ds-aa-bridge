@@ -2,6 +2,27 @@
 
 All notable changes to the Draw Steel + Automated Animations Bridge module will be documented in this file.
 
+## [2.3.0] - 2026-03-16
+
+### Compatibility
+- Verified compatibility with Draw Steel v0.11.1
+- Verified compatibility with Draw Steel Quick Strike v2.1.9
+
+### Fixed
+- **Critical Bug Fix**: Updated hook listener names from `ds-quick-strikeStatusApplied` to `ds-quick-strike:statusApplied` to match Quick Strike 2.1.4+ hook naming convention
+- Status animations now properly trigger when status effects are applied via abilities
+
+### Changed
+- Added ds-quick-strike as explicit dependency in module.json (minimum 2.1.4)
+- Updated verified Draw Steel compatibility to 0.11.1
+
+## [2.2.0] - 2025-02-18
+
+### Compatibility
+- Verified compatibility with Draw Steel v0.10.0
+- Tested with new chat message parts system introduced in v0.10.0
+- No code changes required - ds-quick-strike hook integration remains stable
+
 ## [2.1.0] - 2024-12-17
 
 ### Added

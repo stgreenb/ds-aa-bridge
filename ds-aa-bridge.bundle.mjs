@@ -891,7 +891,9 @@ const STATUS_ANIMATION_MAP = {
   "Frightened": "[DS] Frightened",
   "Poisoned": "[DS] Poisoned",
   "Restrained": "[DS] Restrained",
-  "Stunned": "[DS] Stunned"
+  "Stunned": "[DS] Stunned",
+  "Marked": "[DS] Marked",
+  "Taunted": "[DS] Taunted"
 };
 
 /**
@@ -921,11 +923,11 @@ class DrawSteelHook {
     });
 
     // Register status hooks
-    this.statusAppliedHookId = Hooks.on('ds-quick-strikeStatusApplied', (payload) => {
+    this.statusAppliedHookId = Hooks.on('ds-quick-strike:statusApplied', (payload) => {
       this.handleStatusApplied(payload);
     });
 
-    this.statusUndoneHookId = Hooks.on('ds-quick-strikeStatusUndone', (payload) => {
+    this.statusUndoneHookId = Hooks.on('ds-quick-strike:statusUndone', (payload) => {
       this.handleStatusUndone(payload);
     });
 
@@ -942,12 +944,12 @@ class DrawSteelHook {
     }
 
     if (this.statusAppliedHookId) {
-      Hooks.off('ds-quick-strikeStatusApplied', this.statusAppliedHookId);
+      Hooks.off('ds-quick-strike:statusApplied', this.statusAppliedHookId);
       this.statusAppliedHookId = null;
     }
 
     if (this.statusUndoneHookId) {
-      Hooks.off('ds-quick-strikeStatusUndone', this.statusUndoneHookId);
+      Hooks.off('ds-quick-strike:statusUndone', this.statusUndoneHookId);
       this.statusUndoneHookId = null;
     }
 
@@ -1291,26 +1293,40 @@ class DrawSteelHook {
    */
   async handleStatusApplied(payload) {
     try {
-      // Validate payload
-      const validation = this.validateStatusPayload(payload);
-      if (!validation.valid) {
+      // Validate payload - check for statusName at minimum
+      if (!payload.statusName || typeof payload.statusName !== 'string') {
         return;
       }
 
+      // Normalize status name (capitalize first letter)
+      const normalizedStatusName = payload.statusName.charAt(0).toUpperCase() + payload.statusName.slice(1).toLowerCase();
+
       // Check if animation exists for this status
-      const animationLabel = STATUS_ANIMATION_MAP[payload.statusName];
+      const animationLabel = STATUS_ANIMATION_MAP[normalizedStatusName];
       if (!animationLabel) {
         return;
       }
 
-      // Get the target token
-      const token = canvas.tokens.get(payload.tokenId);
+      // Get the target token - try tokenId first, then fall back to actor lookup
+      let token = null;
+      if (payload.tokenId) {
+        token = canvas.tokens.get(payload.tokenId);
+      }
+      
+      // If no token from tokenId, try to find token from actor
+      if (!token && payload.actorId) {
+        const actor = game.actors.get(payload.actorId);
+        if (actor) {
+          token = actor.token;
+        }
+      }
+      
       if (!token) {
         return;
       }
 
       // Play the animation using AA
-      await this.playStatusAnimation(token, animationLabel, payload.statusName);
+      await this.playStatusAnimation(token, animationLabel, normalizedStatusName);
 
     } catch (error) {
       // Animation failed but status still applied
