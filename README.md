@@ -127,6 +127,12 @@ Enable debug mode in module settings to see:
  - ✅ **AA Integration**: Uses AA database entries ([DS] Status Name) for consistent animations
  - ✅ **Brief Visual Effects**: OnToken animations trigger when conditions are applied
 
+## Recent Changes (v2.2.0)
+  - ✅ **Draw Steel 0.10.0 Compatibility**: Verified compatibility with Draw Steel v0.10.0
+  - ✅ **Chat Message Parts**: Tested with new chat message parts system
+  - ✅ **Stable Integration**: ds-quick-strike hook integration remains stable
+
+
 
 ## License
 
