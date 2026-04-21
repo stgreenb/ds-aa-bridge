@@ -2,7 +2,7 @@
   "id": "ds-aa-bridge",
   "title": "Draw Steel + Automated Animations Bridge",
   "description": "Bridge Draw Steel ability uses to Automated Animations via public APIs",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "authors": [
     {
       "name": "Steve Greenberg",
@@ -35,10 +35,10 @@
       {
         "id": "sequencer",
         "type": "module",
-        "manifest": "https://github.com/fantasycalendar/FoundryVTT-Sequencer/releases/download/3.6.10/module.json",
+        "manifest": "https://github.com/fantasycalendar/FoundryVTT-Sequencer/releases/download/4.0.0/module.json",
         "compatibility": {
-          "minimum": "3.6.10",
-          "verified": "3.6.10"
+          "minimum": "4.0.0",
+          "verified": "4.0.0"
         }
       },
       {
@@ -68,7 +68,7 @@
   "changelog": "https://github.com/stgreenb/ds-aa-bridge/blob/main/CHANGELOG.md",
   "bugs": "https://github.com/stgreenb/ds-aa-bridge/issues",
   "compatibility": {
-    "minimum": "11",
-    "verified": "13"
+    "minimum": "13",
+    "verified": "14"
   }
 }

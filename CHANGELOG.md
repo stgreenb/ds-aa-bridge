@@ -2,6 +2,17 @@
 
 All notable changes to the Draw Steel + Automated Animations Bridge module will be documented in this file.
 
+## [2.4.0] - 2026-04-21
+
+### Compatibility
+- **Updated to Sequencer v4.0.0** for Foundry VTT v14 support
+- Foundry VTT compatibility: minimum v13, verified v14
+- Sequencer compatibility: minimum v4.0.0
+
+### Changed
+- Updated Sequencer dependency from v3.6.10 to v4.0.0
+- Updated Foundry VTT compatibility to v13/v14
+
 ## [2.3.0] - 2026-03-16
 
 ### Compatibility
