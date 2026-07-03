@@ -2,7 +2,7 @@
   "id": "ds-aa-bridge",
   "title": "Draw Steel + Automated Animations Bridge",
   "description": "Bridge Draw Steel ability uses to Automated Animations via public APIs",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "authors": [
     {
       "name": "Steve Greenberg",
@@ -40,7 +40,9 @@
           "minimum": "3.6.10",
           "verified": "3.6.10"
         }
-      },
+      }
+    ],
+    "recommends": [
       {
         "id": "ds-quick-strike",
         "type": "module",
@@ -48,6 +50,15 @@
         "compatibility": {
           "minimum": "2.1.4",
           "verified": "2.1.9"
+        }
+      },
+      {
+        "id": "draw-steel-target-damage",
+        "type": "module",
+        "manifest": "https://github.com/OmerCora/draw-steel-target-damage/releases/latest/download/module.json",
+        "compatibility": {
+          "minimum": "1.0.0",
+          "verified": "1.0.0"
         }
       }
     ],

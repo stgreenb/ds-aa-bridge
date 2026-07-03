@@ -905,14 +905,18 @@ class DrawSteelHook {
     this.dsHookId = null;
     this.statusAppliedHookId = null;
     this.statusUndoneHookId = null;
+    this.dstdDamageHookId = null;
+    this.dstdDamageUndoneHookId = null;
+    this.dstdStatusAppliedHookId = null;
+    this.dstdStatusUndoneHookId = null;
   }
 
   /**
-   * Register the ds-quick-strike and status hooks
+   * Register the ds-quick-strike, dstd, and status hooks
    */
   register() {
-    if (this.dsHookId) {
-      console.debug(`[${MODULE_ID}] ds-quick-strike hook already registered`);
+    if (this.dsHookId && this.dstdDamageHookId) {
+      console.debug(`[${MODULE_ID}] Hooks already registered`);
       return;
     }
 
@@ -931,7 +935,26 @@ class DrawSteelHook {
       this.handleStatusUndone(payload);
     });
 
-    console.log(`[${MODULE_ID}] Registered ds-quick-strike and status hooks`);
+    // Register dstd hooks for DSTD compatibility
+    this.dstdDamageHookId = Hooks.on('dstd:damageApplied', (hookPayload) => {
+      debugLog('DSTD HOOK: Received damageApplied hook', hookPayload);
+      this.handleDsQuickStrikeHook(hookPayload);
+    });
+
+    this.dstdDamageUndoneHookId = Hooks.on('dstd:damageUndone', (hookPayload) => {
+      debugLog('DSTD HOOK: Received damageUndone hook', hookPayload);
+      this.handleDamageUndone(hookPayload);
+    });
+
+    this.dstdStatusAppliedHookId = Hooks.on('dstd:statusApplied', (payload) => {
+      this.handleStatusApplied(payload);
+    });
+
+    this.dstdStatusUndoneHookId = Hooks.on('dstd:statusUndone', (payload) => {
+      this.handleStatusUndone(payload);
+    });
+
+    console.log(`[${MODULE_ID}] Registered ds-quick-strike, status, and dstd hooks`);
   }
 
   /**
@@ -953,11 +976,39 @@ class DrawSteelHook {
       this.statusUndoneHookId = null;
     }
 
+    if (this.dstdDamageHookId) {
+      Hooks.off('dstd:damageApplied', this.dstdDamageHookId);
+      this.dstdDamageHookId = null;
+    }
+
+    if (this.dstdDamageUndoneHookId) {
+      Hooks.off('dstd:damageUndone', this.dstdDamageUndoneHookId);
+      this.dstdDamageUndoneHookId = null;
+    }
+
+    if (this.dstdStatusAppliedHookId) {
+      Hooks.off('dstd:statusApplied', this.dstdStatusAppliedHookId);
+      this.dstdStatusAppliedHookId = null;
+    }
+
+    if (this.dstdStatusUndoneHookId) {
+      Hooks.off('dstd:statusUndone', this.dstdStatusUndoneHookId);
+      this.dstdStatusUndoneHookId = null;
+    }
+
     console.log(`[${MODULE_ID}] Deregistered all hooks`);
   }
 
   
   
+  /**
+   * Handle dstd:damageUndone hook - placeholder, no animation needed yet.
+   * @param {Object} hookPayload - The dstd damageUndone hook payload
+   */
+  async handleDamageUndone(hookPayload) {
+    debugLog('DS-HOOK: Received damageUndone hook (placeholder - no action taken)');
+  }
+
   /**
    * Handle ds-quick-strike damageApplied hook (preferred method).
    *

@@ -2,6 +2,19 @@
 
 All notable changes to the Draw Steel + Automated Animations Bridge module will be documented in this file.
 
+## [2.4.0] - 2026-07-03
+
+### Added
+- DSTD (Draw Steel Target Damage) hook support alongside existing ds-quick-strike listeners
+- New `dstd:damageApplied` → `handleDsQuickStrikeHook` routing (payload superset, no adapter needed)
+- New `dstd:statusApplied` → `handleStatusApplied` and `dstd:statusUndone` → `handleStatusUndone` routing
+- Placeholder `handleDamageUndone` method for `dstd:damageUndone` (no animation yet)
+
+### Changed
+- `ds-quick-strike` moved from `requires` to `recommends` in module.json — either quick-strike or DSTD satisfies the bridge
+- `draw-steel-target-damage` added as a recommended dependency
+- Guard clause now checks all hook IDs to prevent double-registration
+
 ## [2.3.0] - 2026-03-16
 
 ### Compatibility
